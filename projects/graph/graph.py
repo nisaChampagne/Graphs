@@ -105,8 +105,11 @@ class Graph:
         #want to return a path from 1 to 6 for example
 
         # Create an empty queue
+        q = Queue()
         # Add A PATH TO the starting vertex_id to the queue
+        q.enqueue([starting_vertex]) 
         # Create an empty set to store visited nodes
+        visited = set()
         # While the queue is not empty...
             # Dequeue, the first PATH
             # GRAB THE LAST VERTEX FROM THE PATH
@@ -117,7 +120,6 @@ class Graph:
                 # Mark it as visited
                 # Then add A PATH TO all neighbors to the back of the queue
                     # make copy of the path before adding
-        pass  # TODO
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -126,18 +128,21 @@ class Graph:
         depth-first order.
         """
 
-        # Create an empty queue
-        # Add A PATH TO the starting vertex_id to the queue
+        # Create an empty stack
+        stack = Stack()
+        # Add A PATH TO the starting vertex_id to the stack
+        stack.add([starting_vertex])
         # Create an empty set to store visited nodes
-        # While the queue is not empty...
-            # Dequeue, the first PATH
+        visited = set()
+        # While the stack is not empty...
+            # pop the first PATH
             # GRAB THE LAST VERTEX FROM THE PATH
             # check if it is the target(destination_vertex)
                 # if so, return path
             # Check if it's been visited
             # If it has not been visited...
                 # Mark it as visited
-                # Then add A PATH TO all neighbors to the back of the queue
+                # Then add A PATH TO all neighbors to the back of the stack
                     # make copy of the path before adding
 
 
