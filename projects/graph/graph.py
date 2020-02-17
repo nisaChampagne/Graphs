@@ -111,15 +111,26 @@ class Graph:
         # Create an empty set to store visited nodes
         visited = set()
         # While the queue is not empty...
+        while q.size() > 0:
             # Dequeue, the first PATH
+            path = q.dequeue()
             # GRAB THE LAST VERTEX FROM THE PATH
-            # check if it is the target(destination_vertex)
-                # if so, return path
+            vertex = path[-1]
             # Check if it's been visited
             # If it has not been visited...
+            if vertex not in visited:
+                # check if it is the target(destination_vertex)
+                # if so, return path
+                if vertex == destination_vertex:
+                    return path
                 # Mark it as visited
-                # Then add A PATH TO all neighbors to the back of the queue
+                visited.add(vertex)
+                # Then add A PATH TO all neighbors to the back of the stack
                     # make copy of the path before adding
+                for neighbor in self.get_neighbors(vertex):
+                    new_path = list(path)
+                    new_path.append(neighbor)
+                    q.enqueue(new_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -131,20 +142,30 @@ class Graph:
         # Create an empty stack
         stack = Stack()
         # Add A PATH TO the starting vertex_id to the stack
-        stack.add([starting_vertex])
+        stack.push([starting_vertex])
         # Create an empty set to store visited nodes
         visited = set()
         # While the stack is not empty...
+        while stack.size() > 0:
             # pop the first PATH
+            path = stack.pop()
             # GRAB THE LAST VERTEX FROM THE PATH
-            # check if it is the target(destination_vertex)
-                # if so, return path
+            vertex = path[-1]
             # Check if it's been visited
             # If it has not been visited...
+            if vertex not in visited:
+                # check if it is the target(destination_vertex)
+                # if so, return path
+                if vertex == destination_vertex:
+                    return path
                 # Mark it as visited
+                visited.add(vertex)
                 # Then add A PATH TO all neighbors to the back of the stack
                     # make copy of the path before adding
-
+                for neighbor in self.get_neighbors(vertex):
+                    new_path = list(path)
+                    new_path.append(neighbor)
+                    stack.push(new_path)
 
         pass  # TODO
 
@@ -216,12 +237,12 @@ if __name__ == '__main__':
     # Valid BFS path:
     #     [1, 2, 4, 6]
     # '''
-    # print(graph.bfs(1, 6))
+    print(graph.bfs(1, 6))
 
     # '''
     # Valid DFS paths:
     #     [1, 2, 4, 6]
     #     [1, 2, 4, 7, 6]
     # '''
-    # print(graph.dfs(1, 6))
+    print(graph.dfs(1, 6))
     # # print(graph.dfs_recursive(1, 6))
