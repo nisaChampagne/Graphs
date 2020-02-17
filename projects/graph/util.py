@@ -1,5 +1,7 @@
 
 # Note: This Queue class is sub-optimal. Why?
+# O(n) because you have to shift everything to right 1
+# should use SLL
 class Queue():
     def __init__(self):
         self.queue = []
