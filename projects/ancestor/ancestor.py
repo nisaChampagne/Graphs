@@ -16,42 +16,60 @@ Here are steps to solve (almost) any graph problems:
 
 
 '''
-
-class Queue():
-    def __init__(self):
-        self.queue = []
-    def enqueue(self, value):
-        self.queue.append(value)
-    def dequeue(self):
-        if self.size() > 0:
-            return self.queue.pop(0)
-        else:
-            return None
-    def size(self):
-        return len(self.queue)
-
-
-class Graph:
-
-    """Represent a graph as a dictionary of vertices mapping labels to edges."""
-    def __init__(self):
-        self.vertices = {}
-
-    def add_vertex(self, vertex_id):
-        """
-        Add a vertex to the graph.
-        """
-        self.vertices[vertex_id] = set()
-        # order doesnt matter, undirected, and very fast
-
-    def add_edge(self, v1, v2):
-        """
-        Add a directed edge to the graph.
-        """
-        if v1 in self.vertices and v2 in self.vertices:
-            self.vertices[v1].add(v2)
-        else:
-            raise IndexError("That vertex does not exist.")
+from graph import Graph
 
 def earliest_ancestor(ancestors, starting_node):
-    pass
+    # Build the graph
+    ancestor_graph = Graph()
+
+    for ancestor in ancestors:
+        ancestor_graph.add_vertex(ancestor[0])
+        ancestor_graph.add_vertex(ancestor[1])
+
+    for ancestor in ancestors:
+        ancestor_graph.add_edge(ancestor[1], ancestor[0])
+
+    return ancestor_graph.get_ancestors(starting_node)
+
+
+# ```
+#  10
+#  /
+# 1   2   4  11
+#  \ /   / \ /
+#   3   5   8
+#    \ / \   \
+#     6   7   9
+# ```
+
+# If the input individual has no parents, the function should return -1.
+#parent    child
+# 1:        {3}
+# 2:        {3}
+# 3:        {6}
+# 5:        {6}
+# 5:        {7}
+# 4:        {5}
+# 4:        {8}
+# 8:        {9}
+# 11:       {8}
+# 10:       {1}
+
+test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7), (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
+print(earliest_ancestor(test_ancestors, 1))
+print(earliest_ancestor(test_ancestors, 2))
+print(earliest_ancestor(test_ancestors, 3))
+print(earliest_ancestor(test_ancestors, 4))
+print(earliest_ancestor(test_ancestors, 5))
+print(earliest_ancestor(test_ancestors, 6))
+print(earliest_ancestor(test_ancestors, 7))
+print(earliest_ancestor(test_ancestors, 8))
+print(earliest_ancestor(test_ancestors, 9))
+
+
+
+
+
+
+                    
+
