@@ -30,6 +30,7 @@ print(world.starting_room, 'STARTING ROOM')
 
 
 map_graph = Graph()
+print(map_graph, 'map')
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
