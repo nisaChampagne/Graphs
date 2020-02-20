@@ -110,6 +110,7 @@ class SocialGraph:
                 #if visited was a set(), this would be 
                 # visited.add(vertex)
                 ### but visited is a dictionary so this is it:
+                #vertex is the key and path is the value
                 visited[vertex] = path
                 # make a copy of path and enqueue for each vertex
                 for friend in self.friendships[vertex]:
