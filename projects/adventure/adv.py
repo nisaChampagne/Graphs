@@ -43,13 +43,41 @@ print(CYAN + 'START')
 world = World()
 
 
+'''
+
+FROM READ ME:
+You may find the commands `player.current_room.id`, 
+`player.current_room.get_exits()`
+ and `player.travel(direction)` useful.
+
+
+ -relationship in current room provided tuple --> coordinates
+
+I will start out  with the smallest map to make sure my traversal works
+
+im thinking of having a util file with queue and stack available
+
+maybe a traversal BFS as we don't have anything we are actively seeking out
+
+possible game plan:
+    1) populate graph by traversing through all the rooms
+
+    2) keep track of rooms with directions
+
+    3) call populate graph function (populate_graph())
+
+    4) when length of visited is less than number of rooms:
+        - find a path
+        - traverse the returned list of moves
+        -update current room
+'''
+
 # You may uncomment the smaller graphs for development and testing purposes.
 map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt" 
-#  <---- this one is what sprint is on
+# map_file = "maps/main_maze.txt" <------ 997 moves! #  <---- this one is what sprint is on
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -118,7 +146,7 @@ def populate_map():
 
 
 #2) keep track of rooms with directions , dead ends or not
-def keep_track_of_rooms(room_id, visited, graph = map_graph):
+def keep_track_of_rooms_directions(room_id, visited, graph = map_graph):
     '''
     - will take in a room id and set of visited room ids
     - will return a set of moves that the player can take to get to closest space that hasnt been visited
@@ -185,40 +213,33 @@ populate_map()
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+# empty set to store visited
+visited = set()
+#adding first rooms id to set
+visited.add(world.starting_room.id)
+#variable name given to first rooms id
+current_room_id = world.starting_room.id
+#total rooms
+num_rooms = len(map_graph.vertices)
 
-#4) when length of visited is less than number of rooms:
-        #- find a path
-        #- traverse the returned list of moves
-        #-update current room
+#4) when length of visited is less than number of rooms
+while len(visited) < num_rooms:
+    #grabbing moves from fn above
+    moves = keep_track_of_rooms_directions(current_room_id, visited)
+    #traverse the returned list of moves
+    for direction in moves:
+        #player method travel in that direction
+        player.travel(direction)
+        #append the direction to the path
+        traversal_path.append(direction)
+        #add the players current room id to visited set
+        visited.add(player.current_room.id)
+        print(BACKGROUNDDARKGRAY + f"15~~~~~~\n VISITED: {visited}")
 
-'''
+    #variable assigned to the players current room id 
+    #-update current room
+    current_room_id = player.current_room.id
 
-FROM READ ME:
-You may find the commands `player.current_room.id`, 
-`player.current_room.get_exits()`
- and `player.travel(direction)` useful.
-
-
- -relationship in current room provided tuple --> coordinates
-
-I will start out  with the smallest map to make sure my traversal works
-
-im thinking of having a util file with queue and stack available
-
-maybe a traversal BFS as we don't have anything we are actively seeking out
-
-possible game plan:
-    1) populate graph by traversing through all the rooms
-
-    2) keep track of rooms with directions
-
-    3) call populate graph function (populate_graph())
-
-    4) when length of visited is less than number of rooms:
-        - find a path
-        - traverse the returned list of moves
-        -update current room
-'''
 
 # TRAVERSAL TEST
 visited_rooms = set()
