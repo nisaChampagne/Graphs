@@ -23,6 +23,7 @@ LIGHTBLUE    = "\033[94m"
 LIGHTMAGENTA = "\033[95m"
 LIGHTCYAN    = "\033[96m"
 
+print(CYAN + 'START')
 
 # Load world
 world = World()
@@ -33,6 +34,7 @@ map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
+# map_file = "maps/another_test.txt"
 # map_file = "maps/main_maze.txt"
 #  <---- this one is what sprint is on
 
@@ -84,7 +86,7 @@ def populate_map():
 
 
 #2) keep track of rooms with directions
-def find_next():
+def find_next(room_id, visited, graph = map_graph):
     pass
 
 #3) call populate graph function (populate_graph())
@@ -152,12 +154,12 @@ else:
 #######
 # UNCOMMENT TO WALK AROUND
 #######
-player.current_room.print_room_description(player)
-while True:
-    cmds = input("-> ").lower().split(" ")
-    if cmds[0] in ["n", "s", "e", "w"]:
-        player.travel(cmds[0], True)
-    elif cmds[0] == "q":
-        break
-    else:
-        print("I did not understand that command.")
+# player.current_room.print_room_description(player)
+# while True:
+#     cmds = input("-> ").lower().split(" ")
+#     if cmds[0] in ["n", "s", "e", "w"]:
+#         player.travel(cmds[0], True)
+#     elif cmds[0] == "q":
+#         break
+#     else:
+#         print("I did not understand that command.")
