@@ -6,6 +6,24 @@ from util import Graph, Stack, Queue
 import random
 from ast import literal_eval
 
+PURPLE = "\033[95m"
+CYAN ="\033[96m"
+DARKCYAN = "\033[36m"
+BLUE = "\033[94m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+RED = "\033[91m"
+BOLD = "\033[1m"
+UNDERLINE = "\033[4m"
+END = "\033[0m"
+LIGHTRED     = "\033[91m"
+LIGHTGREEN   = "\033[92m"
+LIGHTYELLOW  = "\033[93m"
+LIGHTBLUE    = "\033[94m"
+LIGHTMAGENTA = "\033[95m"
+LIGHTCYAN    = "\033[96m"
+
+
 # Load world
 world = World()
 
@@ -26,15 +44,60 @@ world.load_graph(room_graph)
 world.print_rooms()
 
 player = Player(world.starting_room)
-print(world.starting_room, 'STARTING ROOM')
+print(LIGHTBLUE + f'1~~~~STARTING ROOM: {world.starting_room}')
 
 
 map_graph = Graph()
-print(map_graph, 'map')
+
+#1) populate graph by traversing through all the rooms
+def populate_map():
+    stack = Stack()
+    stack.push(world.starting_room)
+    visited = set()
+    while stack.size() > 0 :
+        room = stack.pop()
+        print(LIGHTGREEN + f'2~~~~ROOM: {room}')
+        room_id = room.id
+        print(LIGHTCYAN + f'3~~~~ROOM ID: {room_id}')
+
+        if room_id not in map_graph.vertices:
+            map_graph.add_vertex(room_id)
+
+        exits = room.get_exits()
+        print(LIGHTMAGENTA + f'4~~~~ROOM EXITS: {exits}')
+        for direction in exits:
+            adjacent_room = room.get_room_in_direction(direction)
+            print(LIGHTRED + f'5~~~~ADJACENT ROOM: {adjacent_room}')
+            adjacent_room_id = adjacent_room.id
+            print(LIGHTYELLOW + f'6~~~~ADJACENT ROOM ID: {adjacent_room_id}')
+
+            # if adjacent room not on map graph
+            if adjacent_room_id not in map_graph.vertices:
+                map_graph.add_vertex(adjacent_room_id)
+
+            map_graph.add_edge(room_id, adjacent_room_id, direction)
+
+            if adjacent_room_id not in visited:
+                stack.push(adjacent_room)
+        visited.add(room_id)
+
+
+
+#2) keep track of rooms with directions
+def find_next():
+    pass
+
+#3) call populate graph function (populate_graph())
+populate_map()
 
 # Fill this out with directions to walk
 # traversal_path = ['n', 'n']
 traversal_path = []
+
+#4) when length of visited is less than number of rooms:
+        #- find a path
+        #- traverse the returned list of moves
+        #-update current room
 
 '''
 
@@ -79,10 +142,10 @@ for move in traversal_path:
     visited_rooms.add(player.current_room)
 
 if len(visited_rooms) == len(room_graph):
-    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+    print(PURPLE + f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
 else:
     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+    print(PURPLE + f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 
 
